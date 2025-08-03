@@ -1,11 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
 function Signup({ onSignup }) {
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (onSignup) onSignup();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: ''
+  });
+
+  const handleChange = e => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
   };
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const { name, email, password } = formData;
+
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert('Signup successful!');
+        if (onSignup) onSignup(); // Redirect or update state
+      } else {
+        alert(data.message || 'Signup failed');
+      }
+    } catch (err) {
+      alert('Error connecting to server');
+    }
+  };
+
   return (
     <div style={{minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #ffe3e3 0%, #fff1f7 100%)'}}>
       <motion.div
@@ -17,10 +49,10 @@ function Signup({ onSignup }) {
       >
         <h2 style={{color: '#e94057', fontWeight: 700, marginBottom: '2rem', textAlign: 'center'}}>💖 Create your U-Love Account</h2>
         <form style={{display: 'flex', flexDirection: 'column', gap: '1.2rem'}} onSubmit={handleSubmit}>
-          <input type="text" placeholder="Your Name" required style={{padding: '0.9rem 1rem', borderRadius: '1rem', border: '1px solid #eee', fontSize: '1rem', outline: 'none'}} />
-          <input type="email" placeholder="Email" required style={{padding: '0.9rem 1rem', borderRadius: '1rem', border: '1px solid #eee', fontSize: '1rem', outline: 'none'}} />
-          <input type="password" placeholder="Password" required style={{padding: '0.9rem 1rem', borderRadius: '1rem', border: '1px solid #eee', fontSize: '1rem', outline: 'none'}} />
-          <button style={{background: 'linear-gradient(90deg, #e94057 0%, #ff6a88 100%)', color: '#fff', border: 'none', borderRadius: '1rem', padding: '1rem', fontWeight: 700, fontSize: '1.1rem', marginTop: '0.5rem', cursor: 'pointer', boxShadow: '0 2px 8px rgba(233,64,87,0.08)'}}>Signup</button>
+          <input style={{padding: '0.9rem 1rem', borderRadius: '1rem', border: '1px solid #eee', fontSize: '1rem', outline: 'none'}} name="name" type="text" placeholder="Your Name" required value={formData.name} onChange={handleChange}/>
+          <input name="email" type="email" placeholder="Email" required value={formData.email} style={{padding: '0.9rem 1rem', borderRadius: '1rem', border: '1px solid #eee', fontSize: '1rem', outline: 'none'}} onChange={handleChange} />
+          <input name="password" type="password" placeholder="Password" required value={formData.password} onChange={handleChange} style={{padding: '0.9rem 1rem', borderRadius: '1rem', border: '1px solid #eee', fontSize: '1rem', outline: 'none'}} />
+          <button type="submit" >Signup</button>
         </form>
       </motion.div>
     </div>
