@@ -5,8 +5,12 @@ function Signup({ onSignup }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: ''
+    password: '',
+    otp: ''
   });
+
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
 
   const handleChange = e => {
     setFormData(prev => ({
@@ -15,7 +19,7 @@ function Signup({ onSignup }) {
     }));
   };
 
-  const handleSubmit = async e => {
+  const handleSignup = async e => {
     e.preventDefault();
     const { name, email, password } = formData;
 
@@ -28,8 +32,14 @@ function Signup({ onSignup }) {
 
       const data = await res.json();
       if (res.ok) {
-        alert('Signup successful!');
-        if (onSignup) onSignup(); 
+        // After successful signup, send OTP
+        await fetch('http://localhost:5000/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        setOtpSent(true);
+        alert('OTP sent to your email!');
       } else {
         alert(data.message || 'Signup failed');
       }
@@ -38,25 +48,139 @@ function Signup({ onSignup }) {
     }
   };
 
+  const handleVerifyOtp = async e => {
+    e.preventDefault();
+    const { email, otp } = formData;
+
+    try {
+      const res = await fetch('http://localhost:5000/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp })
+      });
+
+      const data = await res.text();
+      if (res.ok) {
+        setOtpVerified(true);
+        alert('OTP Verified! You can now log in.');
+        if (onSignup) onSignup();
+      } else {
+        alert(data || 'Invalid OTP');
+      }
+    } catch (err) {
+      alert('Error verifying OTP');
+    }
+  };
+
   return (
-    <div style={{minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #ffe3e3 0%, #fff1f7 100%)'}}>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'linear-gradient(135deg, #ffe3e3 0%, #fff1f7 100%)'
+    }}>
       <motion.div
         className="form-container"
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        style={{background: '#fff', borderRadius: '2rem', boxShadow: '0 8px 32px rgba(233,64,87,0.12)', padding: '2.5rem 2rem', minWidth: 340, maxWidth: 360, width: '100%'}}
+        style={{
+          background: '#fff',
+          borderRadius: '2rem',
+          boxShadow: '0 8px 32px rgba(233,64,87,0.12)',
+          padding: '2.5rem 2rem',
+          minWidth: 340,
+          maxWidth: 360,
+          width: '100%'
+        }}
       >
-        <h2 style={{color: '#e94057', fontWeight: 700, marginBottom: '2rem', textAlign: 'center'}}>💖 Create your U-Love Account</h2>
-        <form style={{display: 'flex', flexDirection: 'column', gap: '1.2rem'}} onSubmit={handleSubmit}>
-          <input style={{padding: '0.9rem 1rem', borderRadius: '1rem', border: '1px solid #eee', fontSize: '1rem', outline: 'none'}} name="name" type="text" placeholder="Your Name" required value={formData.name} onChange={handleChange}/>
-          <input name="email" type="email" placeholder="Email" required value={formData.email} style={{padding: '0.9rem 1rem', borderRadius: '1rem', border: '1px solid #eee', fontSize: '1rem', outline: 'none'}} onChange={handleChange} />
-          <input name="password" type="password" placeholder="Password" required value={formData.password} onChange={handleChange} style={{padding: '0.9rem 1rem', borderRadius: '1rem', border: '1px solid #eee', fontSize: '1rem', outline: 'none'}} />
-          <button type="submit" style={{background: 'linear-gradient(90deg, #e94057 0%, #ff6a88 100%)', color: '#fff', border: 'none', borderRadius: '1rem', padding: '1rem', fontWeight: 700, fontSize: '1.1rem', marginTop: '0.5rem', cursor: 'pointer', boxShadow: '0 2px 8px rgba(233,64,87,0.08)'}}>Signup</button>
+        <h2 style={{
+          color: '#e94057',
+          fontWeight: 700,
+          marginBottom: '2rem',
+          textAlign: 'center'
+        }}>💖 Create your U-Love Account</h2>
+
+        <form
+          style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
+          onSubmit={otpSent ? handleVerifyOtp : handleSignup}
+        >
+          <input
+            name="name"
+            type="text"
+            placeholder="Your Name"
+            required
+            value={formData.name}
+            onChange={handleChange}
+            disabled={otpSent}
+            style={inputStyle}
+          />
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            required
+            value={formData.email}
+            onChange={handleChange}
+            disabled={otpSent}
+            style={inputStyle}
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            required
+            value={formData.password}
+            onChange={handleChange}
+            disabled={otpSent}
+            style={inputStyle}
+          />
+
+          {otpSent && (
+            <input
+              name="otp"
+              type="text"
+              placeholder="Enter OTP"
+              value={formData.otp}
+              onChange={handleChange}
+              required
+              style={inputStyle}
+            />
+          )}
+
+          <button type="submit" style={btnStyle}>
+            {otpSent ? 'Verify OTP' : 'Signup'}
+          </button>
         </form>
+
+        {otpVerified && (
+          <p style={{ marginTop: '1rem', color: 'green', textAlign: 'center' }}>
+            ✅ OTP Verified Successfully!
+          </p>
+        )}
       </motion.div>
     </div>
   );
 }
+
+const inputStyle = {
+  padding: '0.9rem 1rem',
+  borderRadius: '1rem',
+  border: '1px solid #eee',
+  fontSize: '1rem',
+  outline: 'none'
+};
+
+const btnStyle = {
+  padding: '0.9rem 1rem',
+  borderRadius: '1rem',
+  backgroundColor: '#e94057',
+  color: '#fff',
+  border: 'none',
+  fontWeight: 'bold',
+  fontSize: '1rem',
+  cursor: 'pointer'
+};
 
 export default Signup;

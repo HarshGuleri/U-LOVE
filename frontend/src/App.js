@@ -34,11 +34,11 @@ function App() {
   // Wrapper for Login/Signup to inject login handler
   const LoginWrapper = () => {
     const navigate = useNavigate();
-    return <Login onLogin={() => { handleLogin(); navigate('/dashboard'); }} />;
+    return <Login onLogin={() => { handleLogin(); navigate('/'); }} />;
   };
   const SignupWrapper = () => {
     const navigate = useNavigate();
-    return <Signup onSignup={() => { handleLogin(); navigate('/dashboard'); }} />;
+    return <Signup onSignup={() => { navigate('/login'); }} />;
   };
 
   return (
