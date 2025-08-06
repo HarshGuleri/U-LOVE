@@ -8,7 +8,6 @@ function Signup({ onSignup }) {
     password: '',
     otp: ''
   });
-
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
 
@@ -19,25 +18,18 @@ function Signup({ onSignup }) {
     }));
   };
 
+  // Step 1: Signup (triggers OTP send)
   const handleSignup = async e => {
     e.preventDefault();
     const { name, email, password } = formData;
-
     try {
       const res = await fetch('http://localhost:5000/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })
       });
-
       const data = await res.json();
       if (res.ok) {
-        // After successful signup, send OTP
-        await fetch('http://localhost:5000/send-otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
-        });
         setOtpSent(true);
         alert('OTP sent to your email!');
       } else {
@@ -48,24 +40,23 @@ function Signup({ onSignup }) {
     }
   };
 
+  // Step 2: Verify OTP
   const handleVerifyOtp = async e => {
     e.preventDefault();
     const { email, otp } = formData;
-
     try {
-      const res = await fetch('http://localhost:5000/verify-otp', {
+      const res = await fetch('http://localhost:5000/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp })
       });
-
-      const data = await res.text();
+      const data = await res.json();
       if (res.ok) {
         setOtpVerified(true);
         alert('OTP Verified! You can now log in.');
         if (onSignup) onSignup();
       } else {
-        alert(data || 'Invalid OTP');
+        alert(data.message || 'Invalid OTP');
       }
     } catch (err) {
       alert('Error verifying OTP');
@@ -101,7 +92,6 @@ function Signup({ onSignup }) {
           marginBottom: '2rem',
           textAlign: 'center'
         }}>💖 Create your U-Love Account</h2>
-
         <form
           style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
           onSubmit={otpSent ? handleVerifyOtp : handleSignup}
@@ -136,7 +126,6 @@ function Signup({ onSignup }) {
             disabled={otpSent}
             style={inputStyle}
           />
-
           {otpSent && (
             <input
               name="otp"
@@ -148,12 +137,10 @@ function Signup({ onSignup }) {
               style={inputStyle}
             />
           )}
-
           <button type="submit" style={btnStyle}>
             {otpSent ? 'Verify OTP' : 'Signup'}
           </button>
         </form>
-
         {otpVerified && (
           <p style={{ marginTop: '1rem', color: 'green', textAlign: 'center' }}>
             ✅ OTP Verified Successfully!
