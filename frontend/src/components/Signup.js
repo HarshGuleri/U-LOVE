@@ -29,7 +29,7 @@ function Signup({ onSignup }) {
       const data = await res.json();
       if (res.ok) {
         alert('Signup successful!');
-        if (onSignup) onSignup(); // Redirect or update state
+        if (onSignup) onSignup(); 
       } else {
         alert(data.message || 'Signup failed');
       }
@@ -52,7 +52,7 @@ function Signup({ onSignup }) {
           <input style={{padding: '0.9rem 1rem', borderRadius: '1rem', border: '1px solid #eee', fontSize: '1rem', outline: 'none'}} name="name" type="text" placeholder="Your Name" required value={formData.name} onChange={handleChange}/>
           <input name="email" type="email" placeholder="Email" required value={formData.email} style={{padding: '0.9rem 1rem', borderRadius: '1rem', border: '1px solid #eee', fontSize: '1rem', outline: 'none'}} onChange={handleChange} />
           <input name="password" type="password" placeholder="Password" required value={formData.password} onChange={handleChange} style={{padding: '0.9rem 1rem', borderRadius: '1rem', border: '1px solid #eee', fontSize: '1rem', outline: 'none'}} />
-          <button type="submit" >Signup</button>
+          <button type="submit" style={{background: 'linear-gradient(90deg, #e94057 0%, #ff6a88 100%)', color: '#fff', border: 'none', borderRadius: '1rem', padding: '1rem', fontWeight: 700, fontSize: '1.1rem', marginTop: '0.5rem', cursor: 'pointer', boxShadow: '0 2px 8px rgba(233,64,87,0.08)'}}>Signup</button>
         </form>
       </motion.div>
     </div>

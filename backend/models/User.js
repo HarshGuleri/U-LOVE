@@ -7,7 +7,12 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true
   },
-  password: String,
+  password: {
+    type: String,
+    required: true
+  },
+  otp: String,                
+  otpExpires: Date            
 });
 
 module.exports = mongoose.model('User', userSchema);
