@@ -1,55 +1,64 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Features from './components/Features';
-import CoupleShowcase from './components/CoupleShowcase';
-import TinderPromo from './components/TinderPromo';
-import Footer from './components/Footer';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import Dashboard from './components/Dashboard';
-import Profile from './components/Profile';
+import React, { useState } from "react";
+import {BrowserRouter as Router,Routes,Route,Navigate,Outlet,} from "react-router-dom";
+import Header from "./components/Header";
+import Landing from "./components/Landing";
+import Footer from "./components/Footer";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import Dashboard from "./components/Dashboard";
+import Profile from "./components/Profile";
 
-function Landing({ isLoggedIn, onLogout }) {
-  return (
-    <>
-      <Header isLoggedIn={isLoggedIn} onLogout={onLogout} />
-      <Hero />
-      <Features />
-      <CoupleShowcase />
-      <TinderPromo />
-      <Footer />
-    </>
-  );
-}
+// ✅ PrivateComponent (Protected Routes Wrapper)
+const PrivateComponent = ({ isLoggedIn }) => {
+  return isLoggedIn ? <Outlet /> : <Navigate to="/login" />;
+};
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem("user") // persist login
+  );
 
-  // Handlers to pass to Login/Signup
-  const handleLogin = () => setIsLoggedIn(true);
-  const handleLogout = () => setIsLoggedIn(false);
-
-  // Wrapper for Login/Signup to inject login handler
-  const LoginWrapper = () => {
-    const navigate = useNavigate();
-    return <Login onLogin={() => { handleLogin(); navigate('/'); }} />;
+  const handleLogin = () => {
+    localStorage.setItem("user", "true"); // store flag
+    setIsLoggedIn(true);
   };
-  const SignupWrapper = () => {
-    const navigate = useNavigate();
-    return <Signup onSignup={() => { navigate('/login'); }} />;
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
   };
 
   return (
     <Router>
+      {/* Navbar always visible */}
+      <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+
       <Routes>
-        <Route path="/" element={<Landing isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
-        <Route path="/login" element={<LoginWrapper />} />
-        <Route path="/signup" element={<SignupWrapper />} />
-        <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <LoginWrapper />} />
-        <Route path="/profile" element={isLoggedIn ? <Profile /> : <LoginWrapper />} />
+        {/* Public Routes */}
+        <Route path="/" element={<Landing />} />
+        <Route
+          path="/login"
+          element={
+            !isLoggedIn ? (
+              <Login onLogin={handleLogin} />
+            ) : (
+              <Navigate to="/dashboard" />
+            )
+          }
+        />
+        <Route
+          path="/signup"
+          element={!isLoggedIn ? <Signup /> : <Navigate to="/dashboard" />}
+        />
+
+        {/* Protected Routes */}
+        <Route element={<PrivateComponent isLoggedIn={isLoggedIn} />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Routes>
+
+      <Footer /> {/* Footer always visible */}
     </Router>
   );
 }

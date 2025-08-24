@@ -1,0 +1,51 @@
+
+.footer {
+  background: #fff;
+  padding: 3rem 1rem 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 1px solid #f3d6e0;
+  margin-top: 2rem;
+}
+
+.footer-title {
+  color: #e94057;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer-form {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-input {
+  padding: 0.9rem 1.2rem;
+  border-radius: 1rem;
+  border: 1px solid #eee;
+  font-size: 1rem;
+  outline: none;
+  min-width: 220px;
+}
+
+.footer-button {
+  background: linear-gradient(90deg, #e94057 0%, #ff6a88 100%);
+  color: #fff;
+  border: none;
+  border-radius: 1rem;
+  padding: 0.9rem 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.footer-copyright {
+  color: #aaa;
+  font-size: 0.98rem;
+  margin-top: 1.5rem;
+}

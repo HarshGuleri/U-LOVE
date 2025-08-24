@@ -1,0 +1,241 @@
+/* Hero Section */
+.hero {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ffe3e3 0%, #fff1f7 100%);
+  padding: 3rem 1rem 2rem 1rem;
+  position: relative;
+  overflow: hidden;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.hero-content {
+  flex: 1;
+  min-width: 320px;
+  z-index: 2;
+}
+
+.hero-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #e94057;
+  margin-bottom: 1.2rem;
+  line-height: 1.1;
+}
+
+.hero-description {
+  font-size: 1.25rem;
+  color: #444;
+  margin-bottom: 2.2rem;
+  font-weight: 500;
+}
+
+.hero-button {
+  background: linear-gradient(90deg, #e94057 0%, #ff6a88 100%);
+  color: #fff;
+  border: none;
+  border-radius: 1.5rem;
+  padding: 1.1rem 2.5rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 16px rgba(233,64,87,0.10);
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.hero-image-container {
+  flex: 1;
+  min-width: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.hero-image {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 2rem;
+  box-shadow: 0 8px 32px rgba(233,64,87,0.10);
+}
+
+/* Features Section */
+.features {
+  background: #fff;
+  padding: 3.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.features-title {
+  color: #e94057;
+  font-weight: 800;
+  font-size: 2.2rem;
+  margin-bottom: 2.5rem;
+}
+
+.features-container {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.feature-card {
+  background: linear-gradient(135deg, #fff1f7 0%, #ffe3e3 100%);
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 16px rgba(233,64,87,0.08);
+  padding: 2.2rem 2rem;
+  min-width: 240px;
+  max-width: 260px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.feature-title {
+  color: #e94057;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+}
+
+.feature-description {
+  color: #555;
+  font-size: 1.05rem;
+}
+
+/* Couple Showcase Section */
+.couple-showcase {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  padding: 3.5rem 1rem;
+  background: linear-gradient(135deg, #fff1f7 0%, #ffe3e3 100%);
+  flex-wrap: wrap;
+}
+
+.couple-image-container {
+  flex: 1;
+  min-width: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.couple-image {
+  width: 100%;
+  max-width: 380px;
+  border-radius: 2rem;
+  box-shadow: 0 8px 32px rgba(233,64,87,0.10);
+}
+
+.couple-content {
+  flex: 1;
+  min-width: 320px;
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 16px rgba(233,64,87,0.08);
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.couple-title {
+  color: #e94057;
+  font-weight: 800;
+  font-size: 2rem;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.couple-description {
+  color: #555;
+  font-size: 1.15rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.couple-quote {
+  color: #e94057;
+  font-weight: 600;
+}
+
+.couple-attribution {
+  font-style: italic;
+  color: #888;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Tinder Promo Section */
+.promo {
+  background: linear-gradient(90deg, #e94057 0%, #ff6a88 100%);
+  padding: 3.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.promo-content {
+  flex: 1;
+  min-width: 320px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.promo-title {
+  font-weight: 800;
+  font-size: 2.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.promo-description {
+  font-size: 1.15rem;
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.promo-button {
+  background: #fff;
+  color: #e94057;
+  border: none;
+  border-radius: 1.5rem;
+  padding: 1.1rem 2.5rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 16px rgba(255,255,255,0.10);
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.promo-image-container {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.promo-image {
+  width: 100%;
+  max-width: 220px;
+  border-radius: 2rem;
+  box-shadow: 0 8px 32px rgba(162, 39, 39, 0.1);
+}
