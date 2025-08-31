@@ -4,6 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 2rem 1rem;
 }
 
 .profile-card {
@@ -12,8 +13,31 @@
   box-shadow: 0 8px 32px rgba(233,64,87,0.10);
   padding: 2.5rem 2rem;
   min-width: 340px;
-  max-width: 400px;
+  max-width: 600px;
   width: 100%;
+}
+
+.profile-loading, .profile-error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.profile-error {
+  color: #e94057;
+  background: #ffe3e3;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+}
+
+.profile-success {
+  color: #22c55e;
+  background: #dcfce7;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .profile-content {
@@ -22,13 +46,21 @@
   align-items: center;
 }
 
+.profile-image-section {
+  margin-bottom: 1.5rem;
+}
+
 .profile-avatar {
   width: 120px;
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 1.2rem;
   border: 3px solid #e94057;
+}
+
+.profile-display {
+  width: 100%;
+  text-align: center;
 }
 
 .profile-form {
@@ -38,57 +70,177 @@
   gap: 1rem;
 }
 
-.profile-input {
+.form-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.profile-input, .profile-textarea {
   padding: 0.8rem 1rem;
   border-radius: 1rem;
   border: 1px solid #eee;
   font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.profile-input:focus, .profile-textarea:focus {
+  outline: none;
+  border-color: #e94057;
+}
+
+.profile-input:disabled {
+  background-color: #f5f5f5;
+  color: #666;
 }
 
 .profile-textarea {
-  padding: 0.8rem 1rem;
-  border-radius: 1rem;
-  border: 1px solid #eee;
-  font-size: 1rem;
-  min-height: 60px;
+  min-height: 80px;
+  resize: vertical;
 }
 
-.profile-save-button {
-  background: linear-gradient(90deg, #e94057 0%, #ff6a88 100%);
-  color: #fff;
+.form-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.profile-save-button, .profile-cancel-button, .profile-edit-button, .profile-password-button {
   border: none;
   border-radius: 1rem;
-  padding: 1rem;
+  padding: 0.8rem 1.5rem;
   font-weight: 700;
-  font-size: 1.1rem;
-  margin-top: 0.5rem;
+  font-size: 1rem;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.profile-save-button, .profile-edit-button {
+  background: linear-gradient(90deg, #e94057 0%, #ff6a88 100%);
+  color: #fff;
+  flex: 1;
+}
+
+.profile-save-button:hover, .profile-edit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(233,64,87,0.3);
+}
+
+.profile-cancel-button {
+  background: #f5f5f5;
+  color: #666;
+  flex: 1;
+}
+
+.profile-cancel-button:hover {
+  background: #e5e5e5;
+}
+
+.profile-password-button {
+  background: #6366f1;
+  color: #fff;
+  margin-left: 1rem;
+}
+
+.profile-password-button:hover {
+  background: #4f46e5;
+  transform: translateY(-2px);
 }
 
 .profile-name {
   color: #e94057;
-  margin: 0;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.8rem;
+}
+
+.profile-email {
+  color: #666;
+  margin: 0 0 0.3rem 0;
+  font-size: 1rem;
+}
+
+.profile-phone {
+  color: #666;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
 }
 
 .profile-location {
   color: #888;
-  margin: 0.2rem 0 0.8rem 0;
+  margin: 0 0 1.5rem 0;
+  font-size: 1rem;
+}
+
+.profile-section {
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
+.profile-section h4 {
+  color: #333;
+  margin: 0 0 0.8rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.profile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.profile-tag {
+  background: linear-gradient(90deg, #e94057 0%, #ff6a88 100%);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 .profile-bio {
   font-size: 1.05rem;
   color: #333;
   text-align: center;
+  line-height: 1.5;
+  margin: 0;
 }
 
-.profile-edit-button {
-  background: linear-gradient(90deg, #e94057 0%, #ff6a88 100%);
-  color: #fff;
-  border: none;
-  border-radius: 1rem;
-  padding: 0.8rem 1.5rem;
-  font-weight: 700;
-  font-size: 1rem;
-  margin-top: 1.2rem;
-  cursor: pointer;
+.profile-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .profile-card {
+    padding: 2rem 1.5rem;
+    min-width: auto;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+  }
+  
+  .profile-actions {
+    flex-direction: column;
+  }
+  
+  .profile-password-button {
+    margin-left: 0;
+  }
 }

@@ -53,6 +53,7 @@ const userSchema = new mongoose.Schema(
     dateOfBirth: { type: Date, required: true }, // compute age from this
     bio: { type: String, trim: true, maxlength: 500 },
     interests: { type: [String], default: [], index: true },
+    hobbies: { type: [String], default: [] },
     photos: { type: [PHOTO_SCHEMA], default: [] },
 
     // location (2dsphere for “nearby me”)
