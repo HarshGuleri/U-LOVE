@@ -1,15 +1,17 @@
-// src/components/Signup.js
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import './Signup.css';
+import { useNavigate } from 'react-router-dom';
+
 
 const API = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 function Signup({ onSignup }) {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '', otp: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', password: '', otp: '', gender: '', dateOfBirth: '' });
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChange = e => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
@@ -23,7 +25,9 @@ function Signup({ onSignup }) {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          password: formData.password
+          password: formData.password,
+          gender: formData.gender,
+          dateOfBirth: formData.dateOfBirth
         })
       });
       const data = await res.json();
@@ -52,14 +56,16 @@ function Signup({ onSignup }) {
       });
       const data = await res.json();
       if (res.ok) {
+        setFormData(prev => ({ ...prev, otp: '' }));
         setOtpVerified(true);
-        // store token so user is logged in immediately
         if (data.token) localStorage.setItem('token', data.token);
         alert('OTP Verified! You are signed up.');
-        if (onSignup) onSignup(); // maybe navigate to dashboard
+        navigate('/login');
+        if (onSignup) onSignup();
       } else {
         alert(data.message || 'Invalid OTP');
       }
+
     } catch (err) {
       console.error(err);
       alert('Error verifying OTP');
@@ -79,6 +85,7 @@ function Signup({ onSignup }) {
       const data = await res.json();
       if (res.ok) {
         alert('OTP resent to your email.');
+        setFormData(prev => ({ ...prev, otp: '' }));
       } else {
         alert(data.message || 'Resend failed');
       }
@@ -91,68 +98,6 @@ function Signup({ onSignup }) {
   };
 
   return (
-// <<<<<<< HEAD
-    <div className="signup-container">
-      <motion.div
-        className="signup-form-container"
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-      >
-        <h2 className="signup-title">💖 Create your U-Love Account</h2>
-        <form
-          className="signup-form"
-          onSubmit={otpSent ? handleVerifyOtp : handleSignup}
-        >
-          <input
-            name="name"
-            type="text"
-            placeholder="Your Name"
-            required
-            value={formData.name}
-            onChange={handleChange}
-            disabled={otpSent}
-            className="signup-input"
-          />
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            disabled={otpSent}
-            className="signup-input"
-          />
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            required
-            value={formData.password}
-            onChange={handleChange}
-            disabled={otpSent}
-            className="signup-input"
-          />
-          {otpSent && (
-            <input
-              name="otp"
-              type="text"
-              placeholder="Enter OTP"
-              value={formData.otp}
-              onChange={handleChange}
-              required
-              className="signup-input"
-            />
-          )}
-          <button type="submit" className="signup-button">
-            {otpSent ? 'Verify OTP' : 'Signup'}
-          </button>
-        </form>
-        {otpVerified && (
-          <p className="signup-success">
-            ✅ OTP Verified Successfully!
-          </p>
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #ffe3e3 0%, #fff1f7 100%)' }}>
       <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ background: '#fff', borderRadius: '2rem', boxShadow: '0 8px 32px rgba(233,64,87,0.12)', padding: '2.5rem 2rem', minWidth: 340, maxWidth: 360, width: '100%' }}>
         <h2 style={{ color: '#e94057', fontWeight: 700, marginBottom: '2rem', textAlign: 'center' }}>💖 Create your U-Love Account</h2>
@@ -160,6 +105,13 @@ function Signup({ onSignup }) {
           <input name="name" type="text" placeholder="Your Name" required value={formData.name} onChange={handleChange} disabled={otpSent || loading} style={inputStyle} />
           <input name="email" type="email" placeholder="Email" required value={formData.email} onChange={handleChange} disabled={otpSent || loading} style={inputStyle} />
           <input name="password" type="password" placeholder="Password" required value={formData.password} onChange={handleChange} disabled={otpSent || loading} style={inputStyle} />
+          <select name="gender" value={formData.gender} onChange={handleChange} disabled={otpSent || loading} style={inputStyle}>
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+          <input name="dateOfBirth" type="date" placeholder="Date of Birth" required value={formData.dateOfBirth} onChange={handleChange} disabled={otpSent || loading} style={inputStyle} />
           {otpSent && <input name="otp" type="text" placeholder="Enter OTP" value={formData.otp} onChange={handleChange} required style={inputStyle} />}
           <button type="submit" disabled={loading} style={btnStyle}>
             {loading ? 'Please wait...' : otpSent ? 'Verify OTP' : 'Signup'}
@@ -180,7 +132,6 @@ function Signup({ onSignup }) {
   );
 }
 
-export default Signup;
 const inputStyle = { padding: '0.9rem 1rem', borderRadius: '1rem', border: '1px solid #eee', fontSize: '1rem', outline: 'none' };
 const btnStyle = { padding: '0.9rem 1rem', borderRadius: '1rem', backgroundColor: '#e94057', color: '#fff', border: 'none', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer' };
 

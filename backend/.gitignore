@@ -1,0 +1,4 @@
+# Node modules (bahut bade hote hain, hamesha ignore karo)
+node_modules/
+# Environment variables (sensitive information)
+.env

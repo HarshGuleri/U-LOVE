@@ -9,7 +9,7 @@ const OTP_TTL_MINUTES = parseInt(process.env.OTP_TTL_MINUTES, 10) || 5;
 
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, gender, dateOfBirth } = req.body;
     if (!email.endsWith('@chitkara.edu.in')) {
       return res.status(400).json({ message: 'Only Chitkarians are allowed.' });
     }
@@ -17,7 +17,7 @@ exports.signup = async (req, res) => {
     const existing = await User.findOne({ email }).lean();
     if (existing) return res.status(409).json({ message: 'User already exists' });
 
-    const user = new User({ name, email, password });
+    const user = new User({ name, email, password, gender, dateOfBirth });
     const otp = generateOTP();
     await user.setOTP(otp, OTP_TTL_MINUTES);
     await user.save();
