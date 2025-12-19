@@ -105,7 +105,7 @@ const userSchema = new mongoose.Schema(
 
 // ---------- Indexes ----------
 userSchema.index({ location: '2dsphere' }); // geo queries
-userSchema.index({ interests: 1 });
+// userSchema.index({ interests: 1 });
 
 // ---------- Virtuals ----------
 userSchema.virtual('age').get(function () {
