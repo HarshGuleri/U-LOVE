@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
+import VideoChat from "./components/Video";
 
 // ✅ PrivateComponent (Protected Routes Wrapper)
 const PrivateComponent = ({ isLoggedIn }) => {
@@ -46,6 +47,8 @@ function App() {
             )
           }
         />
+        
+        <Route path="/video" element={<VideoChat />} />
         <Route
           path="/signup"
           element={!isLoggedIn ? <Signup /> : <Navigate to="/dashboard" />}
