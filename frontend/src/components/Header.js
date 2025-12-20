@@ -12,7 +12,7 @@ function Header({ isLoggedIn, onLogout }) {
         <Link to="/" className="nav-link">Home</Link>
         {isLoggedIn ? (
           <>
-            <Link to="/dashboard" className="nav-link">Dashboard</Link>
+            <Link to="/video" className="nav-link">Dashboard</Link>
             <Link to="/profile" className="nav-link">Profile</Link>
             <button onClick={onLogout} className="logout-btn">Logout</button>
           </>

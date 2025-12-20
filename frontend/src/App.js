@@ -43,7 +43,7 @@ function App() {
             !isLoggedIn ? (
               <Login onLogin={handleLogin} />
             ) : (
-              <Navigate to="/dashboard" />
+              <Navigate to="/video" />
             )
           }
         />
@@ -56,7 +56,7 @@ function App() {
 
         {/* Protected Routes */}
         <Route element={<PrivateComponent isLoggedIn={isLoggedIn} />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<VideoChat />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
